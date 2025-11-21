@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -189,35 +190,37 @@ const Blogs = () => {
             <h2 className="text-3xl font-bold mb-8">Featured Articles</h2>
             <div className="grid md:grid-cols-3 gap-8">
               {featuredPosts.map((post) => (
-                <Card key={post.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group">
-                  <div className="relative h-48 overflow-hidden">
-                    <img
-                      src={post.image}
-                      alt={post.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <Badge className="absolute top-4 left-4">{post.category}</Badge>
-                  </div>
-                  <CardHeader>
-                    <h3 className="text-xl font-bold line-clamp-2">{post.title}</h3>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground line-clamp-3">{post.excerpt}</p>
-                  </CardContent>
-                  <CardFooter className="flex items-center justify-between text-sm text-muted-foreground">
-                    <div className="flex items-center gap-2">
-                      <User className="w-4 h-4" />
-                      <div>
-                        <p className="font-medium text-foreground">{post.author.name}</p>
-                        <p className="text-xs">{post.author.role}</p>
+                <Link key={post.id} to={`/blogs/${post.id}`}>
+                  <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group h-full">
+                    <div className="relative h-48 overflow-hidden">
+                      <img
+                        src={post.image}
+                        alt={post.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <Badge className="absolute top-4 left-4">{post.category}</Badge>
+                    </div>
+                    <CardHeader>
+                      <h3 className="text-xl font-bold line-clamp-2">{post.title}</h3>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground line-clamp-3">{post.excerpt}</p>
+                    </CardContent>
+                    <CardFooter className="flex items-center justify-between text-sm text-muted-foreground">
+                      <div className="flex items-center gap-2">
+                        <User className="w-4 h-4" />
+                        <div>
+                          <p className="font-medium text-foreground">{post.author.name}</p>
+                          <p className="text-xs">{post.author.role}</p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Clock className="w-4 h-4" />
-                      <span>{post.readTime} min</span>
-                    </div>
-                  </CardFooter>
-                </Card>
+                      <div className="flex items-center gap-1">
+                        <Clock className="w-4 h-4" />
+                        <span>{post.readTime} min</span>
+                      </div>
+                    </CardFooter>
+                  </Card>
+                </Link>
               ))}
             </div>
           </section>
@@ -252,41 +255,40 @@ const Blogs = () => {
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredPosts.map((post) => (
-                <Card
-                  key={post.id}
-                  className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group animate-fade-in"
-                >
-                  <div className="relative h-48 overflow-hidden">
-                    <img
-                      src={post.image}
-                      alt={post.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <Badge className="absolute top-4 left-4">{post.category}</Badge>
-                  </div>
-                  <CardHeader>
-                    <p className="text-sm text-muted-foreground mb-2">{post.date}</p>
-                    <h3 className="text-xl font-bold line-clamp-2 group-hover:text-primary transition-colors">
-                      {post.title}
-                    </h3>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground line-clamp-3">{post.excerpt}</p>
-                  </CardContent>
-                  <CardFooter className="flex items-center justify-between text-sm text-muted-foreground border-t pt-4">
-                    <div className="flex items-center gap-2">
-                      <User className="w-4 h-4" />
-                      <div>
-                        <p className="font-medium text-foreground">{post.author.name}</p>
-                        <p className="text-xs">{post.author.role}</p>
+                <Link key={post.id} to={`/blogs/${post.id}`}>
+                  <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group animate-fade-in h-full">
+                    <div className="relative h-48 overflow-hidden">
+                      <img
+                        src={post.image}
+                        alt={post.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <Badge className="absolute top-4 left-4">{post.category}</Badge>
+                    </div>
+                    <CardHeader>
+                      <p className="text-sm text-muted-foreground mb-2">{post.date}</p>
+                      <h3 className="text-xl font-bold line-clamp-2 group-hover:text-primary transition-colors">
+                        {post.title}
+                      </h3>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground line-clamp-3">{post.excerpt}</p>
+                    </CardContent>
+                    <CardFooter className="flex items-center justify-between text-sm text-muted-foreground border-t pt-4">
+                      <div className="flex items-center gap-2">
+                        <User className="w-4 h-4" />
+                        <div>
+                          <p className="font-medium text-foreground">{post.author.name}</p>
+                          <p className="text-xs">{post.author.role}</p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Clock className="w-4 h-4" />
-                      <span>{post.readTime} min</span>
-                    </div>
-                  </CardFooter>
-                </Card>
+                      <div className="flex items-center gap-1">
+                        <Clock className="w-4 h-4" />
+                        <span>{post.readTime} min</span>
+                      </div>
+                    </CardFooter>
+                  </Card>
+                </Link>
               ))}
             </div>
           )}

@@ -13,6 +13,7 @@ import Testimony from "./pages/Testimony";
 import Projects from "./pages/Projects";
 import Awareness from "./pages/Awareness";
 import Blogs from "./pages/Blogs";
+import BlogPost from "./pages/BlogPost";
 import Donate from "./pages/Donate";
 import Volunteer from "./pages/Volunteer";
 import NotFound from "./pages/NotFound";
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="/projects" element={<Projects />} />
             <Route path="/awareness" element={<Awareness />} />
             <Route path="/blogs" element={<Blogs />} />
+            <Route path="/blogs/:id" element={<BlogPost />} />
             <Route path="/donate" element={<Donate />} />
             <Route path="/volunteer" element={<Volunteer />} />
             {/* Placeholder routes for future pages */}
