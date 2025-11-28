@@ -29,6 +29,7 @@ import {
 } from "lucide-react";
 import volunteerHero from "@/assets/volunteer-hero.jpg";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const volunteerRoles = [
   {
@@ -139,7 +140,7 @@ const Volunteer = () => {
     );
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone) {
@@ -152,24 +153,45 @@ const Volunteer = () => {
       return;
     }
 
-    toast.success("Application submitted successfully! We'll contact you within 3-5 business days.");
-    
-    // Reset form
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      address: "",
-      city: "",
-      state: "",
-      zip: "",
-      availability: "",
-      experience: "",
-      interests: "",
-      whyVolunteer: "",
-    });
-    setSelectedRoles([]);
+    try {
+      const { error } = await supabase
+        .from('volunteer_applications')
+        .insert([
+          {
+            name: `${formData.firstName} ${formData.lastName}`,
+            email: formData.email,
+            phone: formData.phone,
+            interests: selectedRoles.join(', '),
+            availability: formData.availability,
+            experience: formData.experience,
+            status: 'pending'
+          }
+        ]);
+
+      if (error) throw error;
+
+      toast.success("Application submitted successfully! We'll contact you within 3-5 business days.");
+      
+      // Reset form
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        address: "",
+        city: "",
+        state: "",
+        zip: "",
+        availability: "",
+        experience: "",
+        interests: "",
+        whyVolunteer: "",
+      });
+      setSelectedRoles([]);
+    } catch (error: any) {
+      console.error('Error submitting application:', error);
+      toast.error('Failed to submit application');
+    }
   };
 
   return (

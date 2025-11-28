@@ -1,108 +1,64 @@
+import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Users, Heart, Microscope, Calendar, TrendingUp, Award } from "lucide-react";
-import supportGroupImg from "@/assets/project-support-group.jpg";
-import researchImg from "@/assets/project-research.jpg";
-import pediatricImg from "@/assets/project-pediatric.jpg";
-import awarenessEventImg from "@/assets/project-awareness-event.jpg";
-import wellnessImg from "@/assets/project-wellness.jpg";
-import transportImg from "@/assets/project-transport.jpg";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  image: string | null;
+  status: string;
+  created_at: string;
+}
 
 const Projects = () => {
-  const currentProjects = [
-    {
-      title: "Community Support Groups",
-      image: supportGroupImg,
-      status: "Active",
-      category: "Patient Support",
-      description: "Weekly support group meetings connecting patients and caregivers facing similar cancer journeys.",
-      impact: "250+ participants monthly",
-      duration: "Ongoing",
-      funding: "$45,000 annually"
-    },
-    {
-      title: "Pediatric Cancer Care Initiative",
-      image: pediatricImg,
-      status: "Active",
-      category: "Treatment Support",
-      description: "Comprehensive support program for children with cancer, including educational support and family counseling.",
-      impact: "80 families supported",
-      duration: "24 months",
-      funding: "$120,000"
-    },
-    {
-      title: "Wellness & Nutrition Program",
-      image: wellnessImg,
-      status: "Active",
-      category: "Prevention",
-      description: "Expert-led workshops on nutrition, exercise, and holistic wellness for cancer patients and survivors.",
-      impact: "150+ participants",
-      duration: "18 months",
-      funding: "$35,000"
-    }
-  ];
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const completedProjects = [
-    {
-      title: "Annual Awareness Walk 2023",
-      image: awarenessEventImg,
-      status: "Completed",
-      category: "Awareness",
-      description: "Community-wide awareness event bringing together survivors, families, and supporters for education and fundraising.",
-      impact: "2,500+ participants, $85,000 raised",
-      duration: "1 day event",
-      outcomes: "Exceeded fundraising goal by 42%, reached 10,000+ through media coverage"
-    },
-    {
-      title: "Patient Transportation Program",
-      image: transportImg,
-      status: "Completed",
-      category: "Logistics Support",
-      description: "Free transportation service for patients traveling to treatment appointments, reducing barriers to care.",
-      impact: "1,200+ rides provided",
-      duration: "12 months",
-      outcomes: "98% on-time arrival rate, 100% patient satisfaction"
-    }
-  ];
+  useEffect(() => {
+    fetchProjects();
+  }, []);
 
-  const researchGrants = [
-    {
-      title: "Breast Cancer Early Detection Research",
-      institution: "Regional Medical University",
-      amount: "$150,000",
-      duration: "3 years",
-      status: "Ongoing",
-      description: "Advanced imaging technology development for earlier and more accurate breast cancer detection.",
-      progress: 65
-    },
-    {
-      title: "Pediatric Leukemia Treatment Study",
-      institution: "Children's Cancer Institute",
-      amount: "$200,000",
-      duration: "4 years",
-      status: "Ongoing",
-      description: "Clinical trial investigating novel immunotherapy approaches for childhood leukemia.",
-      progress: 40
-    },
-    {
-      title: "Cancer Prevention & Lifestyle Factors",
-      institution: "Public Health Research Center",
-      amount: "$75,000",
-      duration: "2 years",
-      status: "Completed",
-      description: "Comprehensive study on the impact of diet, exercise, and environmental factors on cancer prevention.",
-      progress: 100
+  const fetchProjects = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setProjects(data || []);
+    } catch (error: any) {
+      console.error('Error fetching projects:', error);
+      toast.error('Failed to load projects');
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  const currentProjects = projects.filter(p => p.status === 'active');
+  const completedProjects = projects.filter(p => p.status === 'completed');
 
   const impactStats = [
-    { label: "Active Projects", value: "12", icon: TrendingUp },
-    { label: "Completed Programs", value: "28", icon: Award },
-    { label: "Total Funding", value: "$2.4M", icon: Heart },
+    { label: "Active Projects", value: currentProjects.length.toString(), icon: TrendingUp },
+    { label: "Completed Programs", value: completedProjects.length.toString(), icon: Award },
+    { label: "Total Projects", value: projects.length.toString(), icon: Heart },
     { label: "Lives Impacted", value: "5,000+", icon: Users }
   ];
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-muted-foreground">Loading projects...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen">
