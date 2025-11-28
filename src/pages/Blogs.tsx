@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -6,119 +6,48 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, Clock, User } from "lucide-react";
 import blogHero from "@/assets/blog-hero.jpg";
-import blogSurvivorStory from "@/assets/blog-survivor-story.jpg";
-import blogResearch from "@/assets/blog-research.jpg";
-import blogPrevention from "@/assets/blog-prevention.jpg";
-import blogMedicalInsights from "@/assets/blog-medical-insights.jpg";
-import blogCommunity from "@/assets/blog-community.jpg";
-import blogTreatment from "@/assets/blog-treatment.jpg";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 interface BlogPost {
-  id: number;
+  id: string;
   title: string;
   excerpt: string;
-  category: "Survivor Stories" | "Medical Insights" | "Research Updates" | "Prevention Tips";
-  image: string;
-  author: {
-    name: string;
-    role: string;
-  };
-  readTime: number;
-  date: string;
-  featured?: boolean;
+  category: string;
+  image: string | null;
+  author: string;
+  created_at: string;
 }
-
-const blogPosts: BlogPost[] = [
-  {
-    id: 1,
-    title: "From Diagnosis to Recovery: Maria's Breast Cancer Journey",
-    excerpt: "After her diagnosis, Maria found strength in community support and innovative treatment options. Her inspiring story shows the power of resilience and hope.",
-    category: "Survivor Stories",
-    image: blogSurvivorStory,
-    author: { name: "Dr. Sarah Chen", role: "Oncologist" },
-    readTime: 8,
-    date: "March 15, 2024",
-    featured: true,
-  },
-  {
-    id: 2,
-    title: "Breakthrough in Immunotherapy: New Treatment Options",
-    excerpt: "Recent advances in immunotherapy are revolutionizing cancer treatment. Learn about the latest research and what it means for patients.",
-    category: "Research Updates",
-    image: blogResearch,
-    author: { name: "Dr. Michael Torres", role: "Research Director" },
-    readTime: 12,
-    date: "March 10, 2024",
-    featured: true,
-  },
-  {
-    id: 3,
-    title: "10 Evidence-Based Ways to Reduce Cancer Risk",
-    excerpt: "Discover scientifically proven lifestyle changes that can significantly lower your cancer risk. Simple steps for a healthier future.",
-    category: "Prevention Tips",
-    image: blogPrevention,
-    author: { name: "Dr. Jennifer Adams", role: "Preventive Medicine Specialist" },
-    readTime: 6,
-    date: "March 5, 2024",
-    featured: true,
-  },
-  {
-    id: 4,
-    title: "Understanding Targeted Therapy: A Patient's Guide",
-    excerpt: "Targeted therapy represents a major advancement in cancer treatment. Here's what patients need to know about this personalized approach.",
-    category: "Medical Insights",
-    image: blogMedicalInsights,
-    author: { name: "Dr. Robert Kim", role: "Medical Oncologist" },
-    readTime: 10,
-    date: "February 28, 2024",
-  },
-  {
-    id: 5,
-    title: "Building a Support Network During Cancer Treatment",
-    excerpt: "Community support plays a crucial role in cancer recovery. Learn how to build and maintain a strong support system.",
-    category: "Survivor Stories",
-    image: blogCommunity,
-    author: { name: "Lisa Martinez", role: "Patient Advocate" },
-    readTime: 7,
-    date: "February 20, 2024",
-  },
-  {
-    id: 6,
-    title: "Latest Advances in Radiation Therapy Technology",
-    excerpt: "Modern radiation therapy is more precise and effective than ever. Explore the cutting-edge technologies improving patient outcomes.",
-    category: "Research Updates",
-    image: blogTreatment,
-    author: { name: "Dr. Amanda Foster", role: "Radiation Oncologist" },
-    readTime: 9,
-    date: "February 15, 2024",
-  },
-  {
-    id: 7,
-    title: "Nutrition During Cancer Treatment: Essential Guidelines",
-    excerpt: "Proper nutrition is vital during cancer treatment. Get expert advice on maintaining strength and managing side effects through diet.",
-    category: "Prevention Tips",
-    image: blogPrevention,
-    author: { name: "Emily Chen", role: "Clinical Nutritionist" },
-    readTime: 8,
-    date: "February 10, 2024",
-  },
-  {
-    id: 8,
-    title: "Genetic Testing: Who Should Consider It and Why",
-    excerpt: "Understanding your genetic risk for cancer can guide prevention and early detection strategies. Learn if genetic testing is right for you.",
-    category: "Medical Insights",
-    image: blogMedicalInsights,
-    author: { name: "Dr. David Park", role: "Genetic Counselor" },
-    readTime: 11,
-    date: "February 5, 2024",
-  },
-];
 
 const categories = ["All", "Survivor Stories", "Medical Insights", "Research Updates", "Prevention Tips"];
 
 const Blogs = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchBlogPosts();
+  }, []);
+
+  const fetchBlogPosts = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('blog_posts')
+        .select('*')
+        .eq('status', 'published')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setBlogPosts(data || []);
+    } catch (error: any) {
+      console.error('Error fetching blog posts:', error);
+      toast.error('Failed to load blog posts');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredPosts = blogPosts.filter((post) => {
     const matchesCategory = selectedCategory === "All" || post.category === selectedCategory;
@@ -129,7 +58,15 @@ const Blogs = () => {
     return matchesCategory && matchesSearch;
   });
 
-  const featuredPosts = blogPosts.filter((post) => post.featured);
+  const featuredPosts = filteredPosts.slice(0, 3);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-muted-foreground">Loading blog posts...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen">
@@ -194,7 +131,7 @@ const Blogs = () => {
                   <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group h-full">
                     <div className="relative h-48 overflow-hidden">
                       <img
-                        src={post.image}
+                        src={post.image || blogHero}
                         alt={post.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
@@ -209,14 +146,11 @@ const Blogs = () => {
                     <CardFooter className="flex items-center justify-between text-sm text-muted-foreground">
                       <div className="flex items-center gap-2">
                         <User className="w-4 h-4" />
-                        <div>
-                          <p className="font-medium text-foreground">{post.author.name}</p>
-                          <p className="text-xs">{post.author.role}</p>
-                        </div>
+                        <p className="font-medium text-foreground">{post.author}</p>
                       </div>
                       <div className="flex items-center gap-1">
                         <Clock className="w-4 h-4" />
-                        <span>{post.readTime} min</span>
+                        <span>{new Date(post.created_at).toLocaleDateString()}</span>
                       </div>
                     </CardFooter>
                   </Card>
@@ -259,14 +193,16 @@ const Blogs = () => {
                   <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group animate-fade-in h-full">
                     <div className="relative h-48 overflow-hidden">
                       <img
-                        src={post.image}
+                        src={post.image || blogHero}
                         alt={post.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                       <Badge className="absolute top-4 left-4">{post.category}</Badge>
                     </div>
                     <CardHeader>
-                      <p className="text-sm text-muted-foreground mb-2">{post.date}</p>
+                      <p className="text-sm text-muted-foreground mb-2">
+                        {new Date(post.created_at).toLocaleDateString()}
+                      </p>
                       <h3 className="text-xl font-bold line-clamp-2 group-hover:text-primary transition-colors">
                         {post.title}
                       </h3>
@@ -277,14 +213,11 @@ const Blogs = () => {
                     <CardFooter className="flex items-center justify-between text-sm text-muted-foreground border-t pt-4">
                       <div className="flex items-center gap-2">
                         <User className="w-4 h-4" />
-                        <div>
-                          <p className="font-medium text-foreground">{post.author.name}</p>
-                          <p className="text-xs">{post.author.role}</p>
-                        </div>
+                        <p className="font-medium text-foreground">{post.author}</p>
                       </div>
                       <div className="flex items-center gap-1">
                         <Clock className="w-4 h-4" />
-                        <span>{post.readTime} min</span>
+                        <span>{new Date(post.created_at).toLocaleDateString()}</span>
                       </div>
                     </CardFooter>
                   </Card>

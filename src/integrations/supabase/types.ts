@@ -14,6 +14,80 @@ export type Database = {
   }
   public: {
     Tables: {
+      blog_posts: {
+        Row: {
+          author: string
+          category: string
+          content: string
+          created_at: string | null
+          excerpt: string
+          id: string
+          image: string | null
+          status: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          author: string
+          category: string
+          content: string
+          created_at?: string | null
+          excerpt: string
+          id?: string
+          image?: string | null
+          status?: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          author?: string
+          category?: string
+          content?: string
+          created_at?: string | null
+          excerpt?: string
+          id?: string
+          image?: string | null
+          status?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      comments: {
+        Row: {
+          author: string
+          blog_post_id: string
+          content: string
+          created_at: string | null
+          id: string
+          status: string | null
+        }
+        Insert: {
+          author: string
+          blog_post_id: string
+          content: string
+          created_at?: string | null
+          id?: string
+          status?: string | null
+        }
+        Update: {
+          author?: string
+          blog_post_id?: string
+          content?: string
+          created_at?: string | null
+          id?: string
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comments_blog_post_id_fkey"
+            columns: ["blog_post_id"]
+            isOneToOne: false
+            referencedRelation: "blog_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       events: {
         Row: {
           capacity: number
@@ -80,6 +154,36 @@ export type Database = {
         }
         Relationships: []
       }
+      projects: {
+        Row: {
+          category: string
+          created_at: string | null
+          description: string
+          id: string
+          image: string | null
+          status: string
+          title: string
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          description: string
+          id?: string
+          image?: string | null
+          status?: string
+          title: string
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          description?: string
+          id?: string
+          image?: string | null
+          status?: string
+          title?: string
+        }
+        Relationships: []
+      }
       rsvps: {
         Row: {
           created_at: string | null
@@ -115,6 +219,66 @@ export type Database = {
           },
         ]
       }
+      team_members: {
+        Row: {
+          bio: string
+          created_at: string | null
+          id: string
+          image: string | null
+          name: string
+          order_index: number | null
+          role: string
+        }
+        Insert: {
+          bio: string
+          created_at?: string | null
+          id?: string
+          image?: string | null
+          name: string
+          order_index?: number | null
+          role: string
+        }
+        Update: {
+          bio?: string
+          created_at?: string | null
+          id?: string
+          image?: string | null
+          name?: string
+          order_index?: number | null
+          role?: string
+        }
+        Relationships: []
+      }
+      testimonies: {
+        Row: {
+          cancer_type: string
+          category: string
+          created_at: string | null
+          id: string
+          image: string | null
+          name: string
+          story: string
+        }
+        Insert: {
+          cancer_type: string
+          category: string
+          created_at?: string | null
+          id?: string
+          image?: string | null
+          name: string
+          story: string
+        }
+        Update: {
+          cancer_type?: string
+          category?: string
+          created_at?: string | null
+          id?: string
+          image?: string | null
+          name?: string
+          story?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
@@ -130,6 +294,42 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      volunteer_applications: {
+        Row: {
+          availability: string
+          created_at: string | null
+          email: string
+          experience: string | null
+          id: string
+          interests: string
+          name: string
+          phone: string
+          status: string | null
+        }
+        Insert: {
+          availability: string
+          created_at?: string | null
+          email: string
+          experience?: string | null
+          id?: string
+          interests: string
+          name: string
+          phone: string
+          status?: string | null
+        }
+        Update: {
+          availability?: string
+          created_at?: string | null
+          email?: string
+          experience?: string | null
+          id?: string
+          interests?: string
+          name?: string
+          phone?: string
+          status?: string | null
         }
         Relationships: []
       }
