@@ -1,36 +1,48 @@
 import donateHero from "@/assets/donate-hero.jpg";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { CheckCircle, GraduationCap, Heart, Stethoscope, Users } from "lucide-react";
+import {
+  CheckCircle,
+  GraduationCap,
+  Heart,
+  Stethoscope,
+  Users,
+} from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
 const givingTiers = [
   {
-    amount: 25,
+    amount: 200,
     title: "Care Package",
     description: "Provides comfort items for one patient during treatment",
     icon: Heart,
   },
   {
-    amount: 50,
+    amount: 500,
     title: "Transportation Support",
     description: "Covers gas cards for one family's trips to treatment",
     icon: Users,
   },
   {
-    amount: 100,
+    amount: 1000,
     title: "Medical Supplies",
     description: "Funds essential medical supplies for multiple patients",
     icon: Stethoscope,
   },
   {
-    amount: 250,
+    amount: 5000,
     title: "Research Grant",
     description: "Contributes to breakthrough cancer research initiatives",
     icon: GraduationCap,
@@ -66,7 +78,9 @@ const recentDonors = [
 ];
 
 const Donate = () => {
-  const [donationType, setDonationType] = useState<"one-time" | "recurring">("one-time");
+  const [donationType, setDonationType] = useState<"one-time" | "recurring">(
+    "one-time"
+  );
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
   const [customAmount, setCustomAmount] = useState("");
   const [formData, setFormData] = useState({
@@ -88,9 +102,11 @@ const Donate = () => {
       toast.error("Please fill in all required fields");
       return;
     }
-    
+
     toast.success(
-      `Thank you for your ${donationType === "recurring" ? "monthly" : ""} donation of $${amount}! (Stripe integration pending)`
+      `Thank you for your ${
+        donationType === "recurring" ? "monthly" : ""
+      } donation of $${amount}! (Stripe integration pending)`
     );
   };
 
@@ -109,7 +125,8 @@ const Donate = () => {
             Make a Difference Today
           </h1>
           <p className="text-xl text-muted-foreground mb-8">
-            Your generosity brings hope and healing to those fighting oral cancer. Every donation saves lives.
+            Your generosity brings hope and healing to those fighting oral
+            cancer. Every donation saves lives.
           </p>
         </div>
       </section>
@@ -117,33 +134,49 @@ const Donate = () => {
       {/* Active Campaigns */}
       <section className="py-16 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">Active Campaigns</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">
+            Active Campaigns
+          </h2>
           <div className="grid md:grid-cols-3 gap-8">
-            {activeCampaigns.map((campaign, index) => {
-              const progress = (campaign.raised / campaign.goal) * 100;
-              return (
-                <Card key={index}>
-                  <CardHeader>
-                    <CardTitle className="text-xl">{campaign.title}</CardTitle>
-                    <CardDescription>{campaign.supporters} supporters</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      <div>
-                        <div className="flex justify-between text-sm mb-2">
-                          <span className="font-semibold">${campaign.raised.toLocaleString()}</span>
-                          <span className="text-muted-foreground">of ${campaign.goal.toLocaleString()}</span>
+            {activeCampaigns.length > 0 ? (
+              activeCampaigns.map((campaign, index) => {
+                const progress = (campaign.raised / campaign.goal) * 100;
+                return (
+                  <Card key={index}>
+                    <CardHeader>
+                      <CardTitle className="text-xl">
+                        {campaign.title}
+                      </CardTitle>
+                      <CardDescription>
+                        {campaign.supporters} supporters
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div>
+                          <div className="flex justify-between text-sm mb-2">
+                            <span className="font-semibold">
+                              ${campaign.raised.toLocaleString()}
+                            </span>
+                            <span className="text-muted-foreground">
+                              of ${campaign.goal.toLocaleString()}
+                            </span>
+                          </div>
+                          <Progress value={progress} className="h-3" />
                         </div>
-                        <Progress value={progress} className="h-3" />
+                        <p className="text-sm text-muted-foreground">
+                          {Math.round(progress)}% funded
+                        </p>
                       </div>
-                      <p className="text-sm text-muted-foreground">
-                        {Math.round(progress)}% funded
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
+                    </CardContent>
+                  </Card>
+                );
+              })
+            ) : (
+              <p className="text-center text-muted-foreground col-span-3">
+                No active campaigns at the moment. Please check back later!
+              </p>
+            )}
           </div>
         </div>
       </section>
@@ -162,7 +195,9 @@ const Donate = () => {
                     <Card
                       key={index}
                       className={`cursor-pointer transition-all hover:shadow-lg ${
-                        selectedAmount === tier.amount ? "ring-2 ring-primary" : ""
+                        selectedAmount === tier.amount
+                          ? "ring-2 ring-primary"
+                          : ""
                       }`}
                       onClick={() => {
                         setSelectedAmount(tier.amount);
@@ -176,7 +211,9 @@ const Donate = () => {
                           </div>
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-2">
-                              <CardTitle className="text-xl">${tier.amount}</CardTitle>
+                              <CardTitle className="text-xl">
+                                ₹{tier.amount}
+                              </CardTitle>
                               {selectedAmount === tier.amount && (
                                 <CheckCircle className="w-5 h-5 text-primary" />
                               )}
@@ -188,7 +225,9 @@ const Donate = () => {
                         </div>
                       </CardHeader>
                       <CardContent>
-                        <p className="text-muted-foreground">{tier.description}</p>
+                        <p className="text-muted-foreground">
+                          {tier.description}
+                        </p>
                       </CardContent>
                     </Card>
                   );
@@ -200,28 +239,40 @@ const Donate = () => {
             <div>
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-2xl">Complete Your Donation</CardTitle>
+                  <CardTitle className="text-2xl">
+                    Complete Your Donation
+                  </CardTitle>
                   <CardDescription>Secure payment processing</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleDonate} className="space-y-6">
                     {/* Donation Type */}
                     <div>
-                      <Label className="text-base font-semibold mb-3 block">Donation Type</Label>
+                      <Label className="text-base font-semibold mb-3 block">
+                        Donation Type
+                      </Label>
                       <RadioGroup
                         value={donationType}
-                        onValueChange={(value: "one-time" | "recurring") => setDonationType(value)}
+                        onValueChange={(value: "one-time" | "recurring") =>
+                          setDonationType(value)
+                        }
                         className="flex gap-4"
                       >
                         <div className="flex items-center space-x-2 flex-1">
                           <RadioGroupItem value="one-time" id="one-time" />
-                          <Label htmlFor="one-time" className="cursor-pointer font-normal">
+                          <Label
+                            htmlFor="one-time"
+                            className="cursor-pointer font-normal"
+                          >
                             One-time
                           </Label>
                         </div>
                         <div className="flex items-center space-x-2 flex-1">
                           <RadioGroupItem value="recurring" id="recurring" />
-                          <Label htmlFor="recurring" className="cursor-pointer font-normal">
+                          <Label
+                            htmlFor="recurring"
+                            className="cursor-pointer font-normal"
+                          >
                             Monthly
                           </Label>
                         </div>
@@ -230,19 +281,25 @@ const Donate = () => {
 
                     {/* Amount Selection */}
                     <div>
-                      <Label className="text-base font-semibold mb-3 block">Amount</Label>
+                      <Label className="text-base font-semibold mb-3 block">
+                        Amount
+                      </Label>
                       <div className="grid grid-cols-4 gap-2 mb-4">
                         {givingTiers.map((tier) => (
                           <Button
                             key={tier.amount}
                             type="button"
-                            variant={selectedAmount === tier.amount ? "default" : "outline"}
+                            variant={
+                              selectedAmount === tier.amount
+                                ? "default"
+                                : "outline"
+                            }
                             onClick={() => {
                               setSelectedAmount(tier.amount);
                               setCustomAmount("");
                             }}
                           >
-                            ${tier.amount}
+                            ₹{tier.amount}
                           </Button>
                         ))}
                       </div>
@@ -271,7 +328,9 @@ const Donate = () => {
                         <Input
                           id="name"
                           value={formData.name}
-                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          onChange={(e) =>
+                            setFormData({ ...formData, name: e.target.value })
+                          }
                           required
                         />
                       </div>
@@ -281,7 +340,9 @@ const Donate = () => {
                           id="email"
                           type="email"
                           value={formData.email}
-                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          onChange={(e) =>
+                            setFormData({ ...formData, email: e.target.value })
+                          }
                           required
                         />
                       </div>
@@ -289,14 +350,21 @@ const Donate = () => {
 
                     {/* Payment Information (Placeholder) */}
                     <div className="space-y-4">
-                      <Label className="text-base font-semibold">Payment Information</Label>
+                      <Label className="text-base font-semibold">
+                        Payment Information
+                      </Label>
                       <div>
                         <Label htmlFor="card-number">Card Number</Label>
                         <Input
                           id="card-number"
                           placeholder="1234 5678 9012 3456"
                           value={formData.cardNumber}
-                          onChange={(e) => setFormData({ ...formData, cardNumber: e.target.value })}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              cardNumber: e.target.value,
+                            })
+                          }
                         />
                       </div>
                       <div className="grid grid-cols-2 gap-4">
@@ -306,7 +374,12 @@ const Donate = () => {
                             id="expiry"
                             placeholder="MM/YY"
                             value={formData.expiry}
-                            onChange={(e) => setFormData({ ...formData, expiry: e.target.value })}
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                expiry: e.target.value,
+                              })
+                            }
                           />
                         </div>
                         <div>
@@ -315,19 +388,25 @@ const Donate = () => {
                             id="cvv"
                             placeholder="123"
                             value={formData.cvv}
-                            onChange={(e) => setFormData({ ...formData, cvv: e.target.value })}
+                            onChange={(e) =>
+                              setFormData({ ...formData, cvv: e.target.value })
+                            }
                           />
                         </div>
                       </div>
                     </div>
 
                     <Button type="submit" size="lg" className="w-full">
-                      Donate {selectedAmount || customAmount ? `$${selectedAmount || customAmount}` : ""}
+                      Donate{" "}
+                      {selectedAmount || customAmount
+                        ? `$${selectedAmount || customAmount}`
+                        : ""}
                       {donationType === "recurring" ? " Monthly" : ""}
                     </Button>
 
                     <p className="text-xs text-center text-muted-foreground">
-                      Secure payment processing. Your information is safe with us.
+                      Secure payment processing. Your information is safe with
+                      us.
                     </p>
                   </form>
                 </CardContent>
@@ -338,9 +417,11 @@ const Donate = () => {
       </section>
 
       {/* Donor Recognition */}
-      <section className="py-16 bg-muted/30">
+      {/* <section className="py-16 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">Recent Donors</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">
+            Recent Donors
+          </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {recentDonors.map((donor, index) => (
               <Card key={index}>
@@ -355,24 +436,27 @@ const Donate = () => {
                         ${donor.amount}
                       </Badge>
                     </div>
-                    <p className="text-sm text-muted-foreground italic">"{donor.message}"</p>
+                    <p className="text-sm text-muted-foreground italic">
+                      "{donor.message}"
+                    </p>
                   </div>
                 </CardContent>
               </Card>
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Impact Statement */}
       <section className="py-16">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-6">Every Dollar Counts</h2>
+          <h2 className="text-3xl font-bold mb-6">Every Rupee Counts</h2>
           <p className="text-lg text-muted-foreground mb-8">
-            100% of your donation goes directly to supporting cancer patients and funding research.
-            We're committed to transparency and ensuring your generosity makes the maximum impact.
+            100% of your donation goes directly to supporting cancer patients
+            and funding research. We're committed to transparency and ensuring
+            your generosity makes the maximum impact.
           </p>
-          <div className="grid md:grid-cols-3 gap-8">
+          {/* <div className="grid md:grid-cols-3 gap-8">
             <div>
               <p className="text-4xl font-bold text-primary mb-2">1,200+</p>
               <p className="text-muted-foreground">Patients Supported</p>
@@ -385,7 +469,7 @@ const Donate = () => {
               <p className="text-4xl font-bold text-primary mb-2">95%</p>
               <p className="text-muted-foreground">Goes to Programs</p>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
     </div>
