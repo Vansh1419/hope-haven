@@ -106,14 +106,9 @@ const Awareness = () => {
       icon: Sun,
       title: "Self-Examine Your Mouth",
       description:
-        "Protect your skin from harmful UV rays. Use sunscreen, wear protective clothing, and avoid tanning beds and midday sun.",
-    },
-    {
-      icon: Shield,
-      title: "Get Vaccinated",
-      description:
         "Regularly check for sores, red or white patches, lumps, or unusual changes. Detecting abnormalities early can lead to timely intervention and better outcomes.",
     },
+    
     {
       icon: Shield,
       title: "Stay Active & Hydrated",

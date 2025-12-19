@@ -1,8 +1,6 @@
-import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Mail, Linkedin } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 interface TeamMember {
@@ -13,6 +11,29 @@ interface TeamMember {
   image: string | null;
   order_index: number;
 }
+
+// const TeamMemberCard = ({ member }: { member: TeamMember }) => {
+//   return (
+//     <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 group">
+//       <div className="aspect-square overflow-hidden bg-muted">
+//         {member.image && (
+//           <img
+//             src={member.image}
+//             alt={member.name}
+//             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+//           />
+//         )}
+//       </div>
+//       <div className="p-6 space-y-3">
+//         <div>
+//           <h3 className="text-xl font-bold">{member.name}</h3>
+//           <p className="text-primary font-medium">{member.role}</p>
+//         </div>
+//         <p className="text-sm text-muted-foreground leading-relaxed">{member.bio}</p>
+//       </div>
+//     </Card>
+//   );
+// };
 
 const TeamMemberCard = ({ member }: { member: TeamMember }) => {
   return (
@@ -31,7 +52,10 @@ const TeamMemberCard = ({ member }: { member: TeamMember }) => {
           <h3 className="text-xl font-bold">{member.name}</h3>
           <p className="text-primary font-medium">{member.role}</p>
         </div>
-        <p className="text-sm text-muted-foreground leading-relaxed">{member.bio}</p>
+        {/* ADD 'whitespace-pre-wrap' HERE */}
+        <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
+          {member.bio}
+        </p>
       </div>
     </Card>
   );
@@ -76,14 +100,14 @@ const Teams = () => {
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Team</h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Meet the dedicated professionals and compassionate individuals working tirelessly to support cancer patients and their families every day.
+            Meet the dedicated professionals and compassionate individuals working tirelessly to support oral cancer patients and their families every day.
           </p>
         </div>
 
         {/* Team Members Grid */}
         {teamMembers.length > 0 ? (
           <section className="mb-20">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {teamMembers.map((member) => (
                 <TeamMemberCard key={member.id} member={member} />
               ))}

@@ -1,13 +1,13 @@
-import { useState } from "react";
+import donateHero from "@/assets/donate-hero.jpg";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Progress } from "@/components/ui/progress";
-import { Badge } from "@/components/ui/badge";
-import { Heart, Users, Stethoscope, GraduationCap, CheckCircle } from "lucide-react";
-import donateHero from "@/assets/donate-hero.jpg";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { CheckCircle, GraduationCap, Heart, Stethoscope, Users } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 const givingTiers = [
@@ -38,31 +38,31 @@ const givingTiers = [
 ];
 
 const activeCampaigns = [
-  {
-    title: "Pediatric Cancer Research Fund",
-    raised: 45000,
-    goal: 75000,
-    supporters: 234,
-  },
-  {
-    title: "Patient Support Services",
-    raised: 32000,
-    goal: 50000,
-    supporters: 156,
-  },
-  {
-    title: "Community Wellness Programs",
-    raised: 18500,
-    goal: 25000,
-    supporters: 89,
-  },
+  // {
+  //   title: "Pediatric Cancer Research Fund",
+  //   raised: 45000,
+  //   goal: 75000,
+  //   supporters: 234,
+  // },
+  // {
+  //   title: "Patient Support Services",
+  //   raised: 32000,
+  //   goal: 50000,
+  //   supporters: 156,
+  // },
+  // {
+  //   title: "Community Wellness Programs",
+  //   raised: 18500,
+  //   goal: 25000,
+  //   supporters: 89,
+  // },
 ];
 
 const recentDonors = [
-  { name: "Sarah M.", amount: 100, message: "In memory of my mother" },
-  { name: "Anonymous", amount: 250, message: "Keep up the great work!" },
-  { name: "David & Lisa K.", amount: 50, message: "Proud to support this cause" },
-  { name: "James R.", amount: 500, message: "Hope for a cure" },
+  // { name: "Sarah M.", amount: 100, message: "In memory of my mother" },
+  // { name: "Anonymous", amount: 250, message: "Keep up the great work!" },
+  // { name: "David & Lisa K.", amount: 50, message: "Proud to support this cause" },
+  // { name: "James R.", amount: 500, message: "Hope for a cure" },
 ];
 
 const Donate = () => {
@@ -109,7 +109,7 @@ const Donate = () => {
             Make a Difference Today
           </h1>
           <p className="text-xl text-muted-foreground mb-8">
-            Your generosity brings hope and healing to those fighting cancer. Every donation saves lives.
+            Your generosity brings hope and healing to those fighting oral cancer. Every donation saves lives.
           </p>
         </div>
       </section>

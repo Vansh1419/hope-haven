@@ -1,16 +1,16 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Calendar, MapPin, Clock, Users, Tag, CheckCircle } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { Calendar, CheckCircle, Clock, MapPin, Tag, Users } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { z } from "zod";
 
 const rsvpSchema = z.object({
@@ -177,7 +177,7 @@ const Events = () => {
     switch (type) {
       case "awareness": return "bg-blue-500";
       case "workshop": return "bg-green-500";
-      case "fundraising": return "bg-purple-500";
+      case "conference": return "bg-purple-500";
       default: return "bg-gray-500";
     }
   };

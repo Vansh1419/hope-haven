@@ -1,12 +1,10 @@
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { Input } from "@/components/ui/input";
+import heroImage from "@/assets/gallery.png";
 import { Badge } from "@/components/ui/badge";
-import { Search, Image as ImageIcon, X } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { supabase } from "@/integrations/supabase/client";
+import { Image as ImageIcon, Search, X } from "lucide-react";
+import { useEffect, useState } from "react";
 
 interface GalleryImage {
   id: string;
@@ -37,7 +35,7 @@ const Gallery = () => {
 
       if (error) throw error;
       setImages(data || []);
-      
+
       const uniqueTags = [...new Set((data || []).map((img) => img.tag))];
       setTags(uniqueTags);
     } catch (error) {
@@ -49,9 +47,11 @@ const Gallery = () => {
 
   const filteredImages = images.filter((img) => {
     const matchesTag = !selectedTag || img.tag === selectedTag;
-    const matchesSearch = !searchQuery || 
+    const matchesSearch =
+      !searchQuery ||
       img.tag.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (img.title && img.title.toLowerCase().includes(searchQuery.toLowerCase()));
+      (img.title &&
+        img.title.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesTag && matchesSearch;
   });
 
@@ -65,11 +65,21 @@ const Gallery = () => {
       {/* Hero Section */}
       <section className="relative py-20 bg-gradient-to-br from-primary/10 via-background to-secondary/10">
         <div className="container mx-auto px-4 text-center">
+          <div
+            className="absolute inset-0 "
+            style={{
+              backgroundImage: `url(${heroImage})`,
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+            }}
+          ></div>
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
             Our Gallery
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Explore moments from our events, community activities, and the impact we've made together.
+            Explore moments from our events, community activities, and the
+            impact we've made together.
           </p>
         </div>
       </section>
@@ -91,7 +101,9 @@ const Gallery = () => {
 
             {/* Tag filters */}
             <div className="flex flex-wrap gap-2 items-center">
-              <span className="text-sm text-muted-foreground mr-2">Filter by:</span>
+              <span className="text-sm text-muted-foreground mr-2">
+                Filter by:
+              </span>
               <Badge
                 variant={selectedTag === null ? "default" : "outline"}
                 className="cursor-pointer"
@@ -134,9 +146,11 @@ const Gallery = () => {
           ) : filteredImages.length === 0 ? (
             <div className="text-center py-12">
               <ImageIcon className="h-16 w-16 mx-auto mb-4 text-muted-foreground/50" />
-              <h3 className="text-xl font-semibold text-foreground mb-2">No images found</h3>
+              <h3 className="text-xl font-semibold text-foreground mb-2">
+                No images found
+              </h3>
               <p className="text-muted-foreground">
-                {searchQuery || selectedTag 
+                {searchQuery || selectedTag
                   ? "Try adjusting your filters or search query."
                   : "Check back soon for new gallery images."}
               </p>
@@ -144,7 +158,8 @@ const Gallery = () => {
           ) : (
             <>
               <p className="text-sm text-muted-foreground mb-6">
-                Showing {filteredImages.length} image{filteredImages.length !== 1 ? "s" : ""}
+                Showing {filteredImages.length} image
+                {filteredImages.length !== 1 ? "s" : ""}
                 {selectedTag && ` in "${selectedTag}"`}
               </p>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -180,7 +195,10 @@ const Gallery = () => {
       </section>
 
       {/* Lightbox */}
-      <Dialog open={!!lightboxImage} onOpenChange={() => setLightboxImage(null)}>
+      <Dialog
+        open={!!lightboxImage}
+        onOpenChange={() => setLightboxImage(null)}
+      >
         <DialogContent className="max-w-4xl p-0 overflow-hidden">
           {lightboxImage && (
             <div className="relative">
