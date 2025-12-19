@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, Clock, User } from "lucide-react";
 import blogHero from "@/assets/blog-hero.jpg";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
+import { Clock, Search, User } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
 interface BlogPost {
@@ -84,6 +84,7 @@ const Blogs = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-secondary/80" />
         </div>
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+          
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
             Knowledge & Hope
           </h1>

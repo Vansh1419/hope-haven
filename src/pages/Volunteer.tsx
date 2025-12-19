@@ -1,11 +1,10 @@
-import { useState } from "react";
+import volunteerHero from "@/assets/volunteer-hero.jpg";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
@@ -13,23 +12,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Heart,
-  Users,
-  Calendar,
-  Clock,
-  Award,
-  CheckCircle,
-  Phone,
-  Car,
-  Stethoscope,
-  BookOpen,
-  Megaphone,
-  Gift,
-} from "lucide-react";
-import volunteerHero from "@/assets/volunteer-hero.jpg";
-import { toast } from "sonner";
+import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  Award,
+  BookOpen,
+  Calendar,
+  CheckCircle,
+  Clock,
+  Gift,
+  Heart,
+  Megaphone,
+  Stethoscope,
+  Users
+} from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const volunteerRoles = [
   {
@@ -40,14 +38,7 @@ const volunteerRoles = [
     requirements: ["Background check", "Compassionate listener", "Reliable transportation"],
     training: "20 hours of initial training covering patient interaction and emotional support",
   },
-  {
-    title: "Transportation Volunteer",
-    icon: Car,
-    description: "Drive patients to and from treatment appointments",
-    commitment: "Flexible schedule, minimum 2 trips per month",
-    requirements: ["Valid driver's license", "Clean driving record", "Vehicle insurance", "Background check"],
-    training: "4 hours of safety and protocol training",
-  },
+  
   {
     title: "Administrative Assistant",
     icon: Users,
@@ -541,7 +532,7 @@ const Volunteer = () => {
       </section>
 
       {/* Contact CTA */}
-      <section className="py-16 bg-muted/30">
+      {/* <section className="py-16 bg-muted/30">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4">Have Questions?</h2>
           <p className="text-lg text-muted-foreground mb-8">
@@ -558,7 +549,7 @@ const Volunteer = () => {
             </Button>
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 };
